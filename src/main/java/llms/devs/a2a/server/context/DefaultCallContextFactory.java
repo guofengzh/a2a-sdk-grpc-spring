@@ -79,6 +79,6 @@ public class DefaultCallContextFactory implements CallContextFactory {
         }
 
         // TODO: requestedVersion
-        return new ServerCallContext(user, state, requestedExtensions, /*requestedVersion*/ "1.0");
+        return new ServerCallContext(user, state, requestedExtensions, requestedVersion);
     }
 }

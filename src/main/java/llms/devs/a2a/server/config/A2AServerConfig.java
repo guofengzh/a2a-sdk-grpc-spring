@@ -3,7 +3,9 @@ package llms.devs.a2a.server.config;
 import java.util.concurrent.Executor;
 
 import llms.devs.a2a.server.context.DefaultCallContextFactory;
+import llms.devs.a2a.server.grpc.A2AExtensionsInterceptor;
 import llms.devs.a2a.server.grpc.AgentGrpcHandler;
+import llms.devs.a2a.server.grpc.BlockingOffloadInterceptor;
 import org.a2aproject.sdk.server.agentexecution.AgentExecutor;
 import org.a2aproject.sdk.server.agentexecution.RequestContext;
 import org.a2aproject.sdk.server.config.A2AConfigProvider;
@@ -15,12 +17,12 @@ import org.a2aproject.sdk.server.events.QueueManager;
 import org.a2aproject.sdk.server.requesthandlers.DefaultRequestHandler;
 import org.a2aproject.sdk.server.requesthandlers.RequestHandler;
 import org.a2aproject.sdk.server.tasks.*;
+import org.a2aproject.sdk.server.util.async.Internal;
 import org.a2aproject.sdk.spec.*;
 import org.a2aproject.sdk.transport.grpc.handler.CallContextFactory;
 import org.a2aproject.sdk.transport.grpc.handler.GrpcHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.grpc.server.service.GrpcService;
@@ -71,7 +73,7 @@ public class A2AServerConfig {
 	public RequestHandler requestHandler(AgentExecutor agentExecutor, TaskStore taskStore, QueueManager queueManager,
 	                                     PushNotificationConfigStore pushConfigStore,
 	                                     MainEventBusProcessor mainEventBusProcessor,
-	                                     @Qualifier("a2aInternal") Executor executor) {
+	                                     @Internal Executor executor) {
 		return new DefaultRequestHandler(agentExecutor, taskStore, queueManager,
 				pushConfigStore, mainEventBusProcessor,
 				executor, executor);
@@ -83,12 +85,12 @@ public class A2AServerConfig {
 	}
 
 	@Bean
-	@GrpcService
+	@GrpcService(interceptors = {A2AExtensionsInterceptor.class, BlockingOffloadInterceptor.class})
     public GrpcHandler agentGrpcHandler(
 			AgentCard agentCard,
 			RequestHandler requestHandler,
 			CallContextFactory callContextFactory,
-			@Qualifier("a2aInternal") Executor executor
+			@Internal Executor executor
 	) {
 		return new AgentGrpcHandler(agentCard, requestHandler, callContextFactory, executor);
 	}

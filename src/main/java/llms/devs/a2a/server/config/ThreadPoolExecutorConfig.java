@@ -1,5 +1,6 @@
 package llms.devs.a2a.server.config;
 
+import org.a2aproject.sdk.server.util.async.Internal;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,6 +9,7 @@ import java.util.concurrent.*;
 @Configuration
 public class ThreadPoolExecutorConfig {
     @Bean
+    @Internal
     public Executor a2aInternal() {
         // 1. Get available cores
         int cpuCores = Runtime.getRuntime().availableProcessors();
