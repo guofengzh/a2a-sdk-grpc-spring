@@ -43,7 +43,7 @@ public class SendImmediateResponseMessageIntTest {
 
     @BeforeEach
     public void setup() {
-        grpcChannel = ManagedChannelBuilder.forAddress("localhost", 9090)
+        grpcChannel = ManagedChannelBuilder.forAddress("localhost", port)
                 .usePlaintext()
                 .build();
     }

@@ -47,14 +47,22 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-grpc-server</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.grpc</groupId>
+                    <artifactId>grpc-netty</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+        <!-- Jakarta Servlet binding for gRPC (Replaces Netty) -->
+        <!-- This enables us to host the 'A2AServiceGrpc' gRPC services inside a standard servlet container like Apache Tomcat -->
         <dependency>
             <groupId>io.grpc</groupId>
-            <artifactId>grpc-inprocess</artifactId>
+            <artifactId>grpc-servlet-jakarta</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -84,6 +92,13 @@
             <artifactId>lombok</artifactId>
             <version>1.18.46</version>
         </dependency>
+
+        <!-- The a2a client requires the 'grpc-netty' dependency -->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -92,7 +107,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux-test</artifactId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
