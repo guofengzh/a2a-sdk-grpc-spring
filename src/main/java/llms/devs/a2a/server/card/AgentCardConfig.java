@@ -11,7 +11,7 @@ import java.util.List;
 @Configuration
 public class AgentCardConfig {
 
-    @Value("${spring.grpc.server.port}")
+    @Value("${server.port}")
     private int port;
 
     @Bean

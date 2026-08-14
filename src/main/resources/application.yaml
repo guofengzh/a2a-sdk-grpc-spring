@@ -1,17 +1,13 @@
 spring.application.name: demo
 
+# Enable HTTP/2 for the Tomcat servlet container because gRPC mandates an HTTP/2 transport mechanism
+server.http2.enabled: true
+
 server:
   servlet:
     context-parameters:
       enableLoggingRequestDetails: true
   port: 8080
-
-spring:
-  grpc:
-    server:
-      port: 9090
-      inprocess:
-        name: a2a-grpc-server
 
 logging:
   level:
